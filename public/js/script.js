@@ -1,43 +1,40 @@
 
-// const socket = io();
-// console.log("hey pritam!");
-
+//initilizing socket io -- 1
 const socket = io();
 
-// socket.on('connect', () => {
-//   console.log('connected to server via socket');
-// });
-
-if (navigator.geolocation) {
+//watchposition and marker characteristics
+if (navigator.geolocation) { //2
   //watch the postion of the navigator
   navigator.geolocation.watchPosition((postion) => {
     //mark the lan, logn
     const { latitude, longitude } = postion.coords;
-    //sending the postion coordinates to backend
+    //sending the postion coordinates to backend from frontend
     socket.emit("send-location", { latitude, longitude });
   }, (error) => {
     console.error(error);
-  }, {
+  }, { //requirement from instruction file
     enableHighAccuracy: true, //high accuracy
     timeout: 5000, //in ms
-    maximumAge: 0 //no cashing -> no saving of data
+    maximumAge: 0 //no cashing -> no data is saved
   });
 }
 
-const map = L.map("map").setView([0, 0], 16);
+//loading the map into frontend
+const map = L.map("map").setView([0, 0], 16); //3,  16 -> zooming scale
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "OpenStreetMap"
-}).addTo(map)
+}).addTo(map) //3
 
 
-//creating empty object markers
+//creating empty object markers //4
 const marker = {};
 
+//receive location information //6, 5->app.js
 socket.on("receive-location", (data) => {
   const { id, latitude, longitude } = data;
-  map.setView([latitude, longitude]);
+  map.setView([latitude, longitude]); 
 
-  //naming markers
+  //adding markers //7
   if (marker[id]) {
     //setLatLng - set latitude longitude
     marker[id].setLatLng([latitude, longitude]);
@@ -46,9 +43,10 @@ socket.on("receive-location", (data) => {
   }
 });
 
-socket.on("user-disconnect", () => {
+// instruction 8 - > marker remove it not exist/disconnect
+socket.on("user-disconnect", () => { //9, 8-> app.js(handling disconnect)
   if (marker[id]) {
     map.removeLayer(marker[id]);
-    delete marker[id]
+    delete marker[id] //delete object,key value
   }
 })
