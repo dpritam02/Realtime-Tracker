@@ -1,4 +1,3 @@
-All thanks to sheryians coding school youtube channel.
 ![tracker photo](https://github.com/user-attachments/assets/27600eb4-8e82-45fe-a4f2-a1a6d02a164d)
 
 RoadMap of our project----------------------------------------------------------------
@@ -11,3 +10,5 @@ RoadMap of our project----------------------------------------------------------
 7. When receiving location data via the socket, extract id, latitude, and longitude, and center the map on the new coordinates.
 8. If a marker for the id exists, update its position, otherwise, create a new marker at the given coordinates and add it to the map. when
 a user disconnects, remove their marker from the map and delete it from markers.
+
+All thanks to sheryians coding school youtube channel.
